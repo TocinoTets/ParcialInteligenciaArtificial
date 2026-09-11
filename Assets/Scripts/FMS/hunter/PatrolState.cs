@@ -8,11 +8,17 @@ public class PatrolState : State
     public enum PatrolMode { Loop, PingPong }
     [SerializeField] private float changePatronTimer = 10f;
     [SerializeField] float timer = 0;
+    [SerializeField] float timer2 = 0;
+
     [SerializeField] private PatrolMode mode = PatrolMode.Loop;
     [SerializeField] private bool Change = true;
     private PatrolData _data;
     private int NumberPosition;
     private int sentido = 1;
+
+    //trampa
+    [SerializeField] private float trapTimer = 5f;
+    
 
 
     public PatrolState(PatrolData data, FMS strateMachine) : base(strateMachine)
@@ -23,11 +29,13 @@ public class PatrolState : State
     public override void Enter()
     {
         timer = 0;
+        timer2 = 0;
         Debug.Log("entre PatrolState ");
     }
 
     public override void Update()
     {
+
         // Ejecuta el modo actual
         if (mode == PatrolMode.Loop)
         {
@@ -40,8 +48,16 @@ public class PatrolState : State
 
         // Avanza el tiempo
         timer += Time.deltaTime;
+        timer2 += Time.deltaTime;
 
-        // Cambia de modo cuando se cumple el tiempo
+
+        if (_data.trampaPrefab != null && timer2 > trapTimer)
+        {
+            GameObject.Instantiate(_data.trampaPrefab, _data.transform.position, Quaternion.identity);
+            timer2 = 0;
+        }
+
+
         if (timer >= changePatronTimer)
         {
             mode = mode == PatrolMode.Loop ? PatrolMode.PingPong : PatrolMode.Loop;
@@ -101,6 +117,7 @@ public class PatrolState : State
 [System.Serializable]
 public class PatrolData
 {
+    public GameObject trampaPrefab;
     public List<Transform> listPositions;
     public Transform transform;
     public float minDistans;

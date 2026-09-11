@@ -169,14 +169,8 @@ public class Boid : MonoBehaviour
 
         float distanceActual = Vector3.Distance(_targetTrap.transform.position, transform.position);
 
-        if (_targetTrap != null && distanceActual <= 1f) 
-        {
-            return Arrive(_targetTrap.transform.position);
-        }
-        else
-        {
-            return CalculateSteering(desired);
-        }
+        return CalculateSteering(desired);
+
     }
 
     private Vector3 CalculateSeparation()

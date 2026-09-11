@@ -24,7 +24,6 @@ public class IdleState : State
 
     public override void Update()
     {
-        PatroPingPong();
         timer += Time.deltaTime;
         if (timer >= changePatronTimer) 
         {
@@ -39,29 +38,5 @@ public class IdleState : State
     {
         Debug.Log("sali IdleState");
     }
-
-    private void PatroPingPong()
-    {
-        int numberOfPoints = _data.listPositions.Count;
-
-        var nextposition = _data.listPositions[NumberPosition];
-        if (Vector3.Distance(nextposition.position, _data.transform.position) <= _data.minDistans)
-        {
-            if (NumberPosition == numberOfPoints - 1)
-            {
-                sentido = -1;
-            }
-            else if (NumberPosition == 0)
-            {
-                sentido = 1;
-            }
-            NumberPosition += sentido;
-        }
-
-
-        var direccion = nextposition.position - _data.transform.position;
-        _data.transform.position += direccion.normalized * _data.velocity * Time.deltaTime;
-    }
-
 
 }

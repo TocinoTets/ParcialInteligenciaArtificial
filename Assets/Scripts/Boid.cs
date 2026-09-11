@@ -1,245 +1,235 @@
-using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
-using RangeAttribute = UnityEngine.RangeAttribute;
+using static UnityEngine.GraphicsBuffer;
 
-public class AdvanceAgent : Agent
+public class Boid : MonoBehaviour
 {
-    [Header("Stats")]
-    [SerializeField] private float _maxSpeed = 3f;
-    [SerializeField] private float _maxStreering = 3f;
-    [SerializeField] private float _slowingDistance = 3f;
-    [SerializeField] private float _minDistance = 0.1f;
-    //[SerializeField] private float _maxDistance = 5f;
+    [SerializeField] private GameObject _tagetHunter;
+    [SerializeField] private GameObject _targetTrap;
+    [SerializeField] private float _MaxSpeed = 5f;
+    [SerializeField] private float _MaxSterring = 5f;
+    [SerializeField] private float _SlowingDistance = 3f;
+    [SerializeField] private float _MinDistance = 0.1f;
 
-    private static List<Agent> allAgents = new List<Agent>();
-    [SerializeField] private float _separetionRadius = 2f;
-    [SerializeField] private float _alignmentRadius = 2f;
-    [SerializeField] private float _cohesionRadius = 2f;
+    //Flocking
+    private Boid targetAgent;
+    private static List<Boid> allAgents = new List<Boid>();
+    [SerializeField] private float floatmaximumDetectionRange = 4f;
+    [SerializeField] private float minimumSeparationDistance = 1.0f;
+    [SerializeField] protected float alignment = 2f;
+    //dar importancia 
+    [SerializeField, Range(0f, 3f)] private float SeparationWeight = 1f;
+    [SerializeField, Range(0f, 3f)] private float AlignmentWeight = 1f;
+    [SerializeField, Range(0f, 3f)] private float CohesionWeight = 1f;
 
-    [SerializeField, Range(0f, 3f)] private float _separetionWeight = 1f;
-    [SerializeField, Range(0f, 3f)] private float _alignmentWeight = 1f;
-    [SerializeField, Range(0f, 3f)] private float _cohesionWeight = 1f;
-
-    [Header("References")]
-    [SerializeField] private Agent _target;
-    [SerializeField] private Transform _targetTrap;
+    private Vector3 _TargetPosition;
+    private Vector3 _velocity;
 
     public enum SteeringModes { Seek, Flee, Arrive, Pursuit, Evade, Flocking }
-    public SteeringModes currentSteering;
+    public SteeringModes currentSterring;
 
     private void Awake()
     {
-        allAgents.Add(this);
-        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
-        _velocity += randomDirection.normalized * _maxSpeed;
+        Vector3 randomDireccion = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+        _velocity += randomDireccion.normalized * _MaxSpeed;
 
+        allAgents.Add(this);
     }
 
     private void Update()
     {
-        _velocity += SteeringVector();
+        _velocity.y = 0f;
 
+        _velocity += sterringVector();// si lo descomento , los casazos se van a cualquier lado pero el casador anda con las demas funciones
         transform.position += _velocity * Time.deltaTime;
 
         if (_velocity != Vector3.zero)
         {
             transform.forward = _velocity;
         }
-
-
         transform.position = Bounds.Instance.OutOfBounds(transform.position);
     }
-
-    private Vector3 SteeringVector()
+    private void OnDestroy()
     {
-        switch (currentSteering)
+        allAgents.Remove(this);
+    }
+
+
+    private Vector3 sterringVector()
+    {
+        switch (currentSterring)
         {
             case SteeringModes.Seek:
-                return seek(_target.transform.position);
+                return Seek(_targetTrap.transform.position);
 
             case SteeringModes.Flee:
-                return Flee(_target.transform.position);
+                return Flee(_tagetHunter.transform.position);
 
             case SteeringModes.Arrive:
                 return Arrive(_targetTrap.transform.position);
 
             case SteeringModes.Pursuit:
-                return Pursuit(_target);
+                return Pursuit(_tagetHunter.transform.position);
 
             case SteeringModes.Evade:
-                return Evade(_target);
+                return Evade(_tagetHunter.transform.position);
 
             case SteeringModes.Flocking:
-                return Flocking();
-
+                return floking();
             default:
                 return Vector3.zero;
         }
     }
 
-    private Vector3 Flocking()
-    {
-        return CalculateSeparetion(allAgents, _separetionRadius) * _separetionWeight
-            + CalculateAlignment(allAgents, _alignmentRadius) * _alignmentWeight
-            + CalculateCohesion(allAgents, _cohesionRadius) * _cohesionWeight;
-    }
-
-    private Vector3 CalculateSeparetion(List<Agent> list, float radius)
-    {
-        Vector3 dessired = default;
-        int count = 0;
-
-        foreach (var item in list)
-        {
-            if (item == this) continue;
-
-            if (InRange(item.transform.position, radius))
-            {
-                dessired += (item.transform.position - transform.position);
-                count++;
-            }
-
-        }
-
-        if (count == 0) return Vector3.zero;
-
-        dessired /= count;
-
-        return CalculateSteering(-dessired.normalized * _maxSpeed);
-    }
-    private Vector3 CalculateAlignment(List<Agent> list, float radius)
-    {
-        Vector3 dessired = default;
-        int count = 0;
-
-        foreach (var item in list)
-        {
-            if (item == this) continue;
-
-            if (InRange(item.transform.position, radius))
-            {
-                dessired += item.Velocity;
-                count++;
-            }
-
-        }
-
-        if (count == 0) return Vector3.zero;
-
-        dessired /= count;
-
-        return CalculateSteering(dessired.normalized * _maxSpeed);
-    }
-
-    private Vector3 CalculateCohesion(List<Agent> list, float radius)
-    {
-        Vector3 dessired = default;
-        int count = 0;
-
-        foreach (var item in list)
-        {
-            if (item == this) continue;
-
-            if (InRange(item.transform.position, radius))
-            {
-                dessired += item.transform.position;
-                count++;
-            }
-
-        }
-
-        if (count == 0) return Vector3.zero;
-
-        dessired /= count;
-
-        return seek(dessired);
-    }
-
-    private bool InRange(Vector3 pos, float radius)
-    {
-        return (pos - transform.position).sqrMagnitude <= radius * radius;
-    }
-
     private Vector3 CalculateSteering(Vector3 desired)
     {
         Vector3 steering = desired - _velocity;
-
-        steering = Vector3.ClampMagnitude(steering, _maxStreering * Time.deltaTime);
-
+        steering = Vector3.ClampMagnitude(steering, _MaxSterring * Time.deltaTime);
         return steering;
     }
 
-    private Vector3 DesiredVector(Vector3 traget)
+    private Vector3 DesiredVector(Vector3 target)
     {
-        Vector3 desired = (traget - transform.position).normalized;
-        desired *= _maxSpeed;
-
+        Vector3 desired = (target - transform.position).normalized * _MaxSpeed;
         return desired;
     }
 
-    private Vector3 seek(Vector3 target)
+    private Vector3 Seek(Vector3 target)
     {
-        var desired = DesiredVector(target);
-
+        Vector3 desired = DesiredVector(target);
         return CalculateSteering(desired);
-
-
     }
 
     private Vector3 Flee(Vector3 target)
     {
-        var desired = DesiredVector(target);
-
+        Vector3 desired = DesiredVector(target);
         return CalculateSteering(-desired);
-
     }
 
     private Vector3 Arrive(Vector3 target)
     {
-        Vector3 direction = target - transform.position;
+        Vector3 dir = (target - transform.position);
+        float velocity = _MaxSpeed;
+        float distance = dir.magnitude;
 
-        float distance = direction.magnitude;
-
-        if (distance < _minDistance)
+        if (distance <= _SlowingDistance)
         {
-            return Vector3.zero;
+            float percentDistance = distance / _SlowingDistance;
+            velocity *= percentDistance;
         }
 
-        float targetSpeed = _maxSpeed * (distance / _slowingDistance);
-        float desiredSpeed = Mathf.Min(targetSpeed, _maxSpeed);
+        Vector3 desired = dir.normalized * velocity;
+        return CalculateSteering(desired);
+    }
+    private Vector3 Pursuit(Vector3 target)
+    {
+        Vector3 dir = (target - transform.position);
+        float velocity = _MaxSpeed;
+        float distance = dir.magnitude;
 
-        Vector3 desired = direction.normalized * desiredSpeed;
-        Vector3 steering = CalculateSteering(desired);
+        if (distance <= _SlowingDistance)
+        {
+            float percentDistance = distance / _SlowingDistance;
+            velocity *= percentDistance;
+        }
 
+        Vector3 desired = dir.normalized * velocity;
+        return CalculateSteering(-desired);
+    }
+    private Vector3 Evade(Vector3 target)
+    {
+        Vector3 dir = (target - transform.position);
+        float velocity = _MaxSpeed;
+        float distance = dir.magnitude;
+
+        if (distance <= _SlowingDistance)
+        {
+            float percentDistance = distance / _SlowingDistance;
+            velocity *= percentDistance;
+        }
+
+        Vector3 desired = dir.normalized * velocity;
         return CalculateSteering(desired);
     }
 
-    private Vector3 CalculateFuture(Agent target)
+    //floking como el profe lo hizo
+
+    private Vector3 floking()
     {
-        Vector3 direction = target.transform.position - transform.position;
+        Vector3 desiredSeparation = CalculateSeparation();
+        Vector3 desiredAlignment = CalculateAlignament();
+        Vector3 desoredCohesion = CalculateCohesion();
 
-        float distance = direction.magnitude;
+        Vector3 desired = desiredSeparation * SeparationWeight + desiredAlignment * AlignmentWeight + desoredCohesion * CohesionWeight;
 
-        var prediction = distance / (_maxSpeed + _target.Velocity.magnitude);
+        if (desired == Vector3.zero)
+            desired = _velocity;
 
-        Vector3 futurePosition = target.transform.position + _target.Velocity * prediction;
+        float distanceActual = Vector3.Distance(_targetTrap.transform.position, transform.position);
 
-        return futurePosition;
+        if (_targetTrap != null && distanceActual <= 1f) 
+        {
+            return Arrive(_targetTrap.transform.position);
+        }
+        else
+        {
+            return CalculateSteering(desired);
+        }
     }
 
-    private Vector3 Pursuit(Agent target)
+    private Vector3 CalculateSeparation()
     {
-        var futurePosition = CalculateFuture(target);
-
-        return seek(futurePosition);
+        Vector3 dessired = default;
+        int count = 0;
+        foreach (var item in allAgents)
+        {
+            if (item == this) continue;
+            if (Vector3.Distance(item.transform.position, transform.position) < minimumSeparationDistance)
+            {
+                dessired += (transform.position - item.transform.position).normalized;
+                count++;
+            }
+        }
+        if (count > 0)
+            return (dessired / count).normalized * _MaxSpeed;
+        return Vector3.zero;
     }
 
-    private Vector3 Evade(Agent target)
+    private Vector3 CalculateAlignament()
     {
-        var futurePosition = CalculateFuture(target);
+        Vector3 dessired = default;
+        int count = 0;
+        foreach (var item in allAgents)
+        {
+            if (item == this) continue;
+            if (Vector3.Distance(item.transform.position, transform.position) < floatmaximumDetectionRange)
+            {
+                dessired += item._velocity;
+                count++;
+            }
+        }
+        if (count > 0)
+            return (dessired / count).normalized * _MaxSpeed;
+        return Vector3.zero;
+    }
 
-        return Flee(futurePosition);
+    private Vector3 CalculateCohesion()
+    {
+        Vector3 dessired = default;
+        int count = 0;
+        foreach (var item in allAgents)
+        {
+            if (item == this) continue;
+            if (Vector3.Distance(item.transform.position, transform.position) < alignment)
+            {
+                dessired += item.transform.position;
+                count++;
+            }
+        }
+        if (count > 0)
+            return Seek(dessired);
+        return Vector3.zero;
     }
 }

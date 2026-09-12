@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc9a9a7db6f7041bfd4961f42f8adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boid
-  _tagetHunter: {fileID: 0}
+  _tagetHunter: {fileID: 9233922673598699, guid: 929ee42161a235942b2bf42b2c995730, type: 3}
   _targetTrap: {fileID: 5620583332343330279, guid: 41ff22e867ebd654a9ea35c58891ae94, type: 3}
   _MaxSpeed: 5
   _MaxSterring: 5

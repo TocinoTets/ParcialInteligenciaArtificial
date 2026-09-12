@@ -7,7 +7,8 @@ public enum Estados//aca estoy llamando a los estados q tengo
 {
     PatrolState,
     PatrolPingPongState,
-    IdleState
+    IdleState,
+    StrokeState
 
 }
 
@@ -21,6 +22,7 @@ public class FMSAgent : MonoBehaviour
     [SerializeField] private PatrolData patrolData;
     [SerializeField] private IdleState idleData;
     [SerializeField] private PatrolPingPongState patrolPingPongState;
+    [SerializeField] private StrokeState strokeState;
 
 
     private void Awake()
@@ -29,12 +31,15 @@ public class FMSAgent : MonoBehaviour
         IdleState idleState = new IdleState(steamMachine);
         PatrolState patrolState = new PatrolState(patrolData, steamMachine);
         PatrolPingPongState patrolPingPongState = new PatrolPingPongState (patrolData, steamMachine);
+        StrokeState strokeState = new StrokeState(patrolData, steamMachine);
 
 
         steamMachine.RegisterState(Estados.IdleState, idleState);
         steamMachine.RegisterState(Estados.PatrolState, patrolState);
         steamMachine.RegisterState(Estados.PatrolPingPongState, patrolPingPongState);
+        steamMachine.RegisterState(Estados.StrokeState, strokeState);
         steamMachine.ChangeState(Estados.IdleState);
+
     }
 
 

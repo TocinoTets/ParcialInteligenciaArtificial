@@ -38,7 +38,7 @@ public class PatrolPingPongState : State
 
         if (timer >= changePatronTimer)
         {
-            StrateMachine.ChangeState(Estados.PatrolState);
+            StrateMachine.ChangeState(Estados.StrokeState);
 
             Debug.Log("cambio estado patrolState");
         }

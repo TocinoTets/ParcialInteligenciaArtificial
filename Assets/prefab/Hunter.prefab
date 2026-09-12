@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8837875613600260121}
+  - component: {fileID: 7576297692449640438}
   m_Layer: 0
   m_Name: Hunter
   m_TagString: Hunter
@@ -33,6 +34,28 @@ Transform:
   - {fileID: 7984159576091397251}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7576297692449640438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9233922673598699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87b8d1266f1c634fa5ce945ca709f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMSAgent
+  patrolData:
+    trampaPrefab: {fileID: 5620583332343330279, guid: 41ff22e867ebd654a9ea35c58891ae94, type: 3}
+    listPositions:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    transform: {fileID: 8837875613600260121}
+    minDistans: 0.3
+    velocity: 5
 --- !u!1 &2588457029314770906
 GameObject:
   m_ObjectHideFlags: 0

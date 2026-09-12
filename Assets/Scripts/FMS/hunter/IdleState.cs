@@ -3,7 +3,7 @@ using static UnityEditor.VersionControl.Asset;
 
 public class IdleState : State
 {
-    [SerializeField] private float changePatronTimer = 10f;
+    [SerializeField] private float changePatronTimer = 1f;
     [SerializeField] float timer = 0;
 
     private PatrolData _data;//termine usando data con todos 
@@ -11,10 +11,10 @@ public class IdleState : State
     private int sentido = 1;
 
 
-    public IdleState(PatrolData data, FMS strateMachine) : base(strateMachine)
+    public IdleState(FMS strateMachine) : base(strateMachine)
     {
 
-        _data = data;
+        
     }
     public override void Enter()
     {

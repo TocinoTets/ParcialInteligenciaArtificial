@@ -26,13 +26,38 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.12, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9028721565667899957}
   - {fileID: 7984159576091397251}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7576297692449640438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9233922673598699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87b8d1266f1c634fa5ce945ca709f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMSAgent
+  patrolData:
+    trapTimer: 5
+    timer2: 0
+    trampaPrefab: {fileID: 5620583332343330279, guid: 41ff22e867ebd654a9ea35c58891ae94, type: 3}
+    bullet: {fileID: 902667147206019130, guid: 6ef5b4221e4278e4e93316b157d1651f, type: 3}
+    listPositions:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    transform: {fileID: 8837875613600260121}
+    minDistans: 0.3
+    velocity: 5
 --- !u!1 &2588457029314770906
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Hunter
   - trampa
+  - Boid
   layers:
   - Default
   - TransparentFX

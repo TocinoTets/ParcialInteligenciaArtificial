@@ -26,6 +26,7 @@ public class Boid : MonoBehaviour
 
     private Vector3 _TargetPosition;
     private Vector3 _velocity;
+    public Vector3 Velocity => _velocity;
 
     public enum SteeringModes { Seek, Flee, Arrive, Pursuit, Evade, Flocking }
     public SteeringModes currentSterring;

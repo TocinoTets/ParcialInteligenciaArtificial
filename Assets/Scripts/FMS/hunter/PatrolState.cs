@@ -82,7 +82,7 @@ public class PatrolData
     public float trapTimer = 5f;
     public float timer2 = 0;
     public GameObject trampaPrefab;
-    public GameObject objetivo;
+    public GameObject bullet;
 
     public List<Transform> listPositions;
     public Transform transform;

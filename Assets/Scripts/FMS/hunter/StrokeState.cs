@@ -20,12 +20,13 @@ public class StrokeState : State
     }
     public override void Enter()
     {
-        Debug.Log("entre IdleState");
+        Debug.Log("entre stoke");
     }
 
     public override void Update()
     {
         _data.timer2 += Time.deltaTime;
+
         if (!_useShoot && _data.timer2 > _reutilizeShoot) 
         {
             _useShoot = true;
@@ -37,26 +38,32 @@ public class StrokeState : State
         {
             if (col.CompareTag("Boid") && _useShoot)
             {
-                //falta crear el disparo y q el personaje vaya a el objeto muerto 
+                Boid boid = col.GetComponent<Boid>();
+
+                float distancia = (boid.transform.position - _data.transform.position).magnitude;
+                float tiempo = distancia / 10f;
+                Vector3 futuraPosicion = boid.transform.position + boid.Velocity * tiempo;
+
+                Vector3 direccion = futuraPosicion - _data.transform.position;
+                direccion.y = 0;
+
+                Quaternion rotacion = Quaternion.LookRotation(direccion);
+
+                GameObject.Instantiate(_data.bullet, _data.transform.position, rotacion);
+
                 Debug.Log("disparo");
+
                 _useShoot = false;
                 _data.timer2 = 0;
                 StrateMachine.ChangeState(Estados.PatrolState);
             }
         }
     }
-
-    /*esto lo puedo sacar, es para ver si anda bien el circulo */
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_data.transform.position, _maxDistansShoot);
-    }
-
+    
 
     public override void Exit()
     {
-        Debug.Log("sali IdleState");
+        Debug.Log("sali stoke");
     }
 
 }

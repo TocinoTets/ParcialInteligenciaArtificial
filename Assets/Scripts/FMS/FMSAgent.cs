@@ -28,12 +28,12 @@ public class FMSAgent : MonoBehaviour
     {
         steamMachine = new FMS();
 
-        IdleState idleState = new IdleState(steamMachine);
+        idleData = new IdleState(steamMachine);
         PatrolState patrolState = new PatrolState(patrolData, steamMachine);
-        PatrolPingPongState patrolPingPongState = new PatrolPingPongState(patrolData, steamMachine);
-        StrokeState strokeState = new StrokeState(patrolData, steamMachine);
+        patrolPingPongState = new PatrolPingPongState(patrolData, steamMachine);
+        strokeState = new StrokeState(patrolData, steamMachine); // ahora sí inicializa el campo
 
-        steamMachine.RegisterState(Estados.IdleState, idleState);
+        steamMachine.RegisterState(Estados.IdleState, idleData);
         steamMachine.RegisterState(Estados.PatrolState, patrolState);
         steamMachine.RegisterState(Estados.PatrolPingPongState, patrolPingPongState);
         steamMachine.RegisterState(Estados.StrokeState, strokeState);
@@ -46,6 +46,7 @@ public class FMSAgent : MonoBehaviour
 
     private void Update()
     {
+        strokeState.Update();
         steamMachine.Update();
 
         Vector3 direccion = transform.position - posicionAnterior;

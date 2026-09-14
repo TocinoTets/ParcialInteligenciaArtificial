@@ -55,7 +55,7 @@ public class StrokeState : State
 
                 _useShoot = false;
                 _data.timer2 = 0;
-                StrateMachine.ChangeState(Estados.PatrolState);
+                //StrateMachine.ChangeState(Estados.PatrolState);
             }
         }
     }

@@ -25,7 +25,8 @@ public class Boid : MonoBehaviour
     [SerializeField, Range(0f, 3f)] private float CohesionWeight = 1f;
 
     private Vector3 _TargetPosition;
-    private Vector3 _velocity;
+    [SerializeField] private Vector3 _velocity;
+    public Vector3 Velocity => _velocity;
 
     public enum SteeringModes { Seek, Flee, Arrive, Pursuit, Evade, Flocking }
     public SteeringModes currentSterring;

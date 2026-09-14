@@ -136,5 +136,6 @@ MonoBehaviour:
   alignment: 2
   SeparationWeight: 1
   AlignmentWeight: 1
-  CohesionWeight: 1
+  CohesionWeight: 1.95
+  _velocity: {x: 0, y: 0, z: 0}
   currentSterring: 5

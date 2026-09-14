@@ -8,8 +8,11 @@ public class Boid : MonoBehaviour
 {
 
     private bool isDead = false;
-    [SerializeField] private GameObject _tagetHunter;
+    [SerializeField] private Agent _targetHunter;
+    [SerializeField] private float _HunterDetectionRange = 30f; // nueva variable
     [SerializeField] private GameObject _targetTrap;
+    [SerializeField] private float _TrapDetectionRange = 20f; // nueva variable
+    [SerializeField] private float _TrapExitRange = 15f;
     [SerializeField] private float _MaxSpeed = 5f;
     [SerializeField] private float _MaxSterring = 5f;
     [SerializeField] private float _SlowingDistance = 3f;
@@ -46,6 +49,9 @@ public class Boid : MonoBehaviour
         if (isDead) return;
         _velocity.y = 0f;
 
+        ActualizarEstadoSegunHunter(); // nuevo
+        ActualizarEstadoSegunTrap(); // nuevo
+
         _velocity += sterringVector();// si lo descomento , los casazos se van a cualquier lado pero el casador anda con las demas funciones
         transform.position += _velocity * Time.deltaTime;
 
@@ -54,6 +60,42 @@ public class Boid : MonoBehaviour
             transform.forward = _velocity;
         }
         transform.position = Bounds.Instance.OutOfBounds(transform.position);
+    }
+
+    private void ActualizarEstadoSegunHunter()
+    {
+        if (_targetHunter == null) return;
+        float distance = Vector3.Distance(transform.position, _targetHunter.transform.position);
+        //Debug.Log($"{name} - distancia al hunter: {distance} | rango: {_HunterDetectionRange} | estado actual: {currentSterring}");
+
+
+        if (distance <= _HunterDetectionRange)
+        {
+            
+            currentSterring = SteeringModes.Evade;
+        }
+        else if (currentSterring == SteeringModes.Evade)
+        {
+            currentSterring = SteeringModes.Flocking;
+        }
+
+
+    }
+    private void ActualizarEstadoSegunTrap()
+    {
+        if (_targetTrap == null) return;
+        if (currentSterring == SteeringModes.Evade) return;
+
+        float distance = Vector3.Distance(transform.position, _targetTrap.transform.position);
+
+        if (currentSterring != SteeringModes.Arrive && distance <= _TrapDetectionRange)
+        {
+            currentSterring = SteeringModes.Arrive;
+        }
+        else if (currentSterring == SteeringModes.Arrive && distance > _TrapExitRange)
+        {
+            currentSterring = SteeringModes.Flocking;
+        }
     }
     private void OnDestroy()
     {
@@ -69,16 +111,16 @@ public class Boid : MonoBehaviour
                 return Seek(_targetTrap.transform.position);
 
             case SteeringModes.Flee:
-                return Flee(_tagetHunter.transform.position);
+                return Flee(_targetHunter.transform.position);
 
             case SteeringModes.Arrive:
                 return Arrive(_targetTrap.transform.position);
 
             case SteeringModes.Pursuit:
-                return Pursuit(_tagetHunter.transform.position);
+                return Pursuit(_targetHunter.transform.position);
 
             case SteeringModes.Evade:
-                return Evade(_tagetHunter.transform.position);
+                return Evade(_targetHunter);
 
             case SteeringModes.Flocking:
                 return floking();
@@ -114,17 +156,21 @@ public class Boid : MonoBehaviour
 
     private Vector3 Arrive(Vector3 target)
     {
-        Vector3 dir = (target - transform.position);
-        float velocity = _MaxSpeed;
-        float distance = dir.magnitude;
+        Vector3 direction = target - transform.position;
 
-        if (distance <= _SlowingDistance)
+        float distance = direction.magnitude;
+
+        if (distance < _MinDistance)
         {
-            float percentDistance = distance / _SlowingDistance;
-            velocity *= percentDistance;
+            return Vector3.zero;
         }
 
-        Vector3 desired = dir.normalized * velocity;
+        float targetSpeed = _MaxSpeed * (distance / _SlowingDistance);
+        float desiredSpeed = Mathf.Min(targetSpeed, _MaxSpeed);
+
+        Vector3 desired = direction.normalized * desiredSpeed;
+        Vector3 steering = CalculateSteering(desired);
+
         return CalculateSteering(desired);
     }
     private Vector3 Pursuit(Vector3 target)
@@ -142,20 +188,11 @@ public class Boid : MonoBehaviour
         Vector3 desired = dir.normalized * velocity;
         return CalculateSteering(-desired);
     }
-    private Vector3 Evade(Vector3 target)
+    private Vector3 Evade(Agent target)
     {
-        Vector3 dir = (target - transform.position);
-        float velocity = _MaxSpeed;
-        float distance = dir.magnitude;
+        var futurePosition = CalculateFuture(target);
 
-        if (distance <= _SlowingDistance)
-        {
-            float percentDistance = distance / _SlowingDistance;
-            velocity *= percentDistance;
-        }
-
-        Vector3 desired = dir.normalized * velocity;
-        return CalculateSteering(desired);
+        return Flee(futurePosition);
     }
 
     //floking como el profe lo hizo
@@ -229,6 +266,18 @@ public class Boid : MonoBehaviour
         if (count > 0)
             return Seek(dessired);
         return Vector3.zero;
+    }
+    private Vector3 CalculateFuture(Agent target)
+    {
+        Vector3 direction = target.transform.position - transform.position;
+
+        float distance = direction.magnitude;
+
+        var prediction = distance / (_MaxSpeed + target.Velocity.magnitude);
+
+        Vector3 futurePosition = target.transform.position + target.Velocity * prediction;
+
+        return futurePosition;
     }
 
 

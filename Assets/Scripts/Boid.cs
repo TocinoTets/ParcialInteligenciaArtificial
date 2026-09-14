@@ -6,6 +6,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Boid : MonoBehaviour
 {
+
+    private bool isDead = false;
     [SerializeField] private GameObject _tagetHunter;
     [SerializeField] private GameObject _targetTrap;
     [SerializeField] private float _MaxSpeed = 5f;
@@ -41,6 +43,7 @@ public class Boid : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
         _velocity.y = 0f;
 
         _velocity += sterringVector();// si lo descomento , los casazos se van a cualquier lado pero el casador anda con las demas funciones
@@ -226,5 +229,12 @@ public class Boid : MonoBehaviour
         if (count > 0)
             return Seek(dessired);
         return Vector3.zero;
+    }
+
+
+    public void Die()
+    {
+        isDead = true;
+        _velocity = Vector3.zero;
     }
 }

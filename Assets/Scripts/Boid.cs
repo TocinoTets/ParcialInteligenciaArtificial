@@ -1,11 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
+
 public class Boid : MonoBehaviour
 {
+
+
+
 
     private bool isDead = false;
     [SerializeField] private Agent _targetHunter;
@@ -281,9 +286,48 @@ public class Boid : MonoBehaviour
     }
 
 
+
+
     public void Die()
     {
+        if (isDead) return;
+
         isDead = true;
         _velocity = Vector3.zero;
+
+        StartCoroutine(Respawn());
+    }
+
+    private IEnumerator Respawn()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
+
+        yield return new WaitForSeconds(10f);
+
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.enabled = true;
+        }
+
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = true;
+        }
+
+        isDead = false;
+
+
     }
 }

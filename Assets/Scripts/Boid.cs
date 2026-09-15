@@ -49,17 +49,25 @@ public class Boid : MonoBehaviour
         if (isDead) return;
         _velocity.y = 0f;
 
-        ActualizarEstadoSegunHunter(); // nuevo
-        ActualizarEstadoSegunTrap(); // nuevo
+        ActualizarEstadoSegunHunter();
+        ActualizarEstadoSegunTrap();
 
-        _velocity += sterringVector();// si lo descomento , los casazos se van a cualquier lado pero el casador anda con las demas funciones
+        _velocity += sterringVector();
+
+        // Limita la velocidad final para mantener el control de movimiento
+        _velocity = Vector3.ClampMagnitude(_velocity, _MaxSpeed);
+
         transform.position += _velocity * Time.deltaTime;
 
         if (_velocity != Vector3.zero)
         {
             transform.forward = _velocity;
         }
-        transform.position = Bounds.Instance.OutOfBounds(transform.position);
+
+        if (Bounds.Instance != null)
+        {
+            transform.position = Bounds.Instance.OutOfBounds(transform.position);
+        }
     }
 
     private void ActualizarEstadoSegunHunter()
@@ -84,15 +92,17 @@ public class Boid : MonoBehaviour
     private void ActualizarEstadoSegunTrap()
     {
         if (_targetTrap == null) return;
-        if (currentSterring == SteeringModes.Evade) return;
+        if (currentSterring == SteeringModes.Evade) return; 
 
         float distance = Vector3.Distance(transform.position, _targetTrap.transform.position);
 
-        if (currentSterring != SteeringModes.Arrive && distance <= _TrapDetectionRange)
+        
+        if (distance <= _TrapDetectionRange)
         {
             currentSterring = SteeringModes.Arrive;
         }
-        else if (currentSterring == SteeringModes.Arrive && distance > _TrapExitRange)
+        
+        else if (distance > _TrapDetectionRange)
         {
             currentSterring = SteeringModes.Flocking;
         }
@@ -157,11 +167,12 @@ public class Boid : MonoBehaviour
     private Vector3 Arrive(Vector3 target)
     {
         Vector3 direction = target - transform.position;
-
         float distance = direction.magnitude;
 
+ 
         if (distance < _MinDistance)
         {
+            _velocity = Vector3.Lerp(_velocity, Vector3.zero, Time.deltaTime * 5f);
             return Vector3.zero;
         }
 
@@ -169,7 +180,6 @@ public class Boid : MonoBehaviour
         float desiredSpeed = Mathf.Min(targetSpeed, _MaxSpeed);
 
         Vector3 desired = direction.normalized * desiredSpeed;
-        Vector3 steering = CalculateSteering(desired);
 
         return CalculateSteering(desired);
     }

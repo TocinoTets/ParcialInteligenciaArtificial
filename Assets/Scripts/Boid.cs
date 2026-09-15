@@ -108,6 +108,7 @@ public class Boid : MonoBehaviour
     {
         Vector3 desiredVelocity = Vector3.zero;
 
+        // 1. Fuerzas base de Flocking
         desiredVelocity += CalculateSeparation() * SeparationWeight
             + CalculateAlignment() * AlignmentWeight
             + CalculateCohesion() * CohesionWeight;
@@ -118,6 +119,7 @@ public class Boid : MonoBehaviour
             desiredVelocity += Evade(_targetHunter) * EvadeWeight;
         }
 
+        //aca deberia cambiar de estado a arrive
         if (_targetTrap != null && Vector3.Distance(transform.position, _targetTrap.transform.position) <= _TrapDetectionRange)
         {
             desiredVelocity += Arrive(_targetTrap.transform.position) * TrapWeight;
@@ -151,18 +153,21 @@ public class Boid : MonoBehaviour
     private Vector3 Arrive(Vector3 target)
     {
         Vector3 direction = target - transform.position;
+
         float distance = direction.magnitude;
 
         if (distance < _MinDistance)
         {
-            _velocity = Vector3.Lerp(_velocity, Vector3.zero, Time.deltaTime * 5f);
             return Vector3.zero;
         }
 
         float targetSpeed = _MaxSpeed * (distance / _SlowingDistance);
         float desiredSpeed = Mathf.Min(targetSpeed, _MaxSpeed);
 
-        return direction.normalized * desiredSpeed;
+        Vector3 desired = direction.normalized * desiredSpeed;
+        Vector3 steering = CalculateSteering(desired);
+
+        return CalculateSteering(desired);
     }
 
     private Vector3 Pursuit(Agent target)
@@ -176,8 +181,6 @@ public class Boid : MonoBehaviour
         Vector3 futurePosition = CalculateFuture(target);
         return Flee(futurePosition);
     }
-
-    // --- CÁLCULOS DE FLOCKING ---
 
     private Vector3 CalculateSeparation()
     {

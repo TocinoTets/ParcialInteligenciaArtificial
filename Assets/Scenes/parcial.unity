@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid (1)
@@ -172,9 +176,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15
@@ -312,6 +332,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid (4)
@@ -357,9 +381,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15
@@ -381,6 +421,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid
@@ -426,9 +470,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15
@@ -450,6 +510,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid (3)
@@ -495,9 +559,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15
@@ -652,6 +732,14 @@ PrefabInstance:
       value: Hunter
       objectReference: {fileID: 0}
     - target: {fileID: 7576297692449640438, guid: 929ee42161a235942b2bf42b2c995730, type: 3}
+      propertyPath: patrolData.timer2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576297692449640438, guid: 929ee42161a235942b2bf42b2c995730, type: 3}
+      propertyPath: patrolData.trapTimer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576297692449640438, guid: 929ee42161a235942b2bf42b2c995730, type: 3}
       propertyPath: 'patrolData.listPositions.Array.data[0]'
       value: 
       objectReference: {fileID: 1899855748}
@@ -738,6 +826,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid (6)
@@ -783,9 +875,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15
@@ -860,6 +968,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid (5)
@@ -905,9 +1017,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15
@@ -934,6 +1062,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238133444}
     m_Modifications:
+    - target: {fileID: 1546952232720464358, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2445833875673284590, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_Name
       value: Boid (2)
@@ -979,9 +1111,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: EvadeWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _respawnTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _targetHunter
       value: 
       objectReference: {fileID: 1264057016}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: CohesionWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: SeparationWeight
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _TrapDetectionRange
       value: 15

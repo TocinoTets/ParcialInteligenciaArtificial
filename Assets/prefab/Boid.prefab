@@ -127,21 +127,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boid
   _targetHunter: {fileID: 0}
-  _HunterDetectionRange: 30
+  _HunterDetectionRange: 20
   _targetTrap: {fileID: 5620583332343330279, guid: 41ff22e867ebd654a9ea35c58891ae94, type: 3}
-  _TrapDetectionRange: 20
-  _MinDistance: 0.1
+  _TrapDetectionRange: 3
   _MaxSpeed: 5
   _MaxSteering: 5
   _SlowingDistance: 3
+  _MinDistance: 0.1
   floatmaximumDetectionRange: 4
-  minimumSeparationDistance: 1
+  minimumSeparationDistance: 1.5
   alignment: 2
-  SeparationWeight: 1
+  SeparationWeight: 5
   AlignmentWeight: 1
-  CohesionWeight: 1.95
-  EvadeWeight: 3
-  TrapWeight: 2
+  CohesionWeight: 3
+  EvadeWeight: 5
+  TrapWeight: 3
   _velocity: {x: 0, y: 0, z: 0}
   currentSteering: 5
 --- !u!54 &4829543811897901668

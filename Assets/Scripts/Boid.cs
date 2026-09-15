@@ -10,18 +10,19 @@ public class Boid : MonoBehaviour
     [SerializeField] private Agent _targetHunter;
     [SerializeField] private float _HunterDetectionRange = 30f;
     [SerializeField] private GameObject _targetTrap;
-    [SerializeField] private float _TrapDetectionRange = 20f;
-    [SerializeField] private float _MinDistance = 0.1f;
+    [SerializeField] private float _TrapDetectionRange = 5f;
 
     [Header("Movement Settings")]
     [SerializeField] private float _MaxSpeed = 5f;
     [SerializeField] private float _MaxSteering = 5f;
     [SerializeField] private float _SlowingDistance = 3f;
+    [SerializeField] private float _MinDistance = 0.1f;
+
 
     [Header("Flocking Settings")]
     private static List<Boid> allAgents = new List<Boid>();
     [SerializeField] private float floatmaximumDetectionRange = 4f;
-    [SerializeField] private float minimumSeparationDistance = 1f;
+    [SerializeField] private float minimumSeparationDistance = 1.5f;
     [SerializeField] private float alignment = 2f;
 
     [Header("Flocking Weights")]
@@ -106,12 +107,15 @@ public class Boid : MonoBehaviour
 
     private Vector3 Flocking()
     {
-        Vector3 desiredVelocity = Vector3.zero;
 
         // 1. Fuerzas base de Flocking
-        desiredVelocity += CalculateSeparation() * SeparationWeight
-            + CalculateAlignment() * AlignmentWeight
-            + CalculateCohesion() * CohesionWeight;
+
+        Vector3 calculateSeparation = CalculateSeparation();
+        Vector3 calculateAlignment = CalculateAlignment();
+        Vector3 calculateCohesion = CalculateCohesion();
+
+        Vector3 desiredVelocity = calculateSeparation * SeparationWeight + calculateAlignment * AlignmentWeight + calculateCohesion * CohesionWeight;
+        
 
         // esto anda bien el tema es cuando lo pones en una funcion y lo llamas desde el update,( ahi se rompe todo, no se porque)lo que esta entre parantesis no lo escribi yo lo dijo copilot
         if (_targetHunter != null && Vector3.Distance(transform.position, _targetHunter.transform.position) <= _HunterDetectionRange)
@@ -122,7 +126,7 @@ public class Boid : MonoBehaviour
         //aca deberia cambiar de estado a arrive
         if (_targetTrap != null && Vector3.Distance(transform.position, _targetTrap.transform.position) <= _TrapDetectionRange)
         {
-            desiredVelocity += Arrive(_targetTrap.transform.position) * TrapWeight;
+            currentSteering = SteeringModes.Arrive;
         }
 
         if (desiredVelocity == Vector3.zero)
@@ -155,19 +159,24 @@ public class Boid : MonoBehaviour
         Vector3 direction = target - transform.position;
 
         float distance = direction.magnitude;
+        float velocity = _MaxSpeed;
 
-        if (distance < _MinDistance)
+        if (distance <= _SlowingDistance)
         {
-            return Vector3.zero;
+            float percentDistance = distance / _SlowingDistance;
+
+            if (distance <= _MinDistance)
+            {
+                return Vector3.zero;
+            }
+
+            velocity *= percentDistance;
+            Debug.Log("encotrado");
         }
 
-        float targetSpeed = _MaxSpeed * (distance / _SlowingDistance);
-        float desiredSpeed = Mathf.Min(targetSpeed, _MaxSpeed);
+        Vector3 desired = direction.normalized * velocity;
 
-        Vector3 desired = direction.normalized * desiredSpeed;
-        Vector3 steering = CalculateSteering(desired);
-
-        return CalculateSteering(desired);
+        return desired;
     }
 
     private Vector3 Pursuit(Agent target)

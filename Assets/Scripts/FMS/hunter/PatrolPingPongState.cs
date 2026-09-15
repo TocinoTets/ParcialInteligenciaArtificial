@@ -21,7 +21,6 @@ public class PatrolPingPongState : State
     public override void Enter()
     {
         timer = 0;
-        Debug.Log("entre ping pong");
     }
 
     public override void Update()
@@ -40,13 +39,11 @@ public class PatrolPingPongState : State
         {
             StrateMachine.ChangeState(Estados.PatrolState);
 
-            Debug.Log("cambio estado patrolState");
         }
     }
 
     public override void Exit()
     {
-        Debug.Log("sali ping pong");
     }
 
 

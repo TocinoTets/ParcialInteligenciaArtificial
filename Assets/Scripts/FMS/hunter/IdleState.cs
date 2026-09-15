@@ -19,7 +19,6 @@ public class IdleState : State
     public override void Enter()
     {
         timer = 0;
-        Debug.Log("entre IdleState");
     }
 
     public override void Update()
@@ -30,13 +29,11 @@ public class IdleState : State
             
             StrateMachine.ChangeState(Estados.PatrolState);
 
-            Debug.Log("cambio estado patrolState");
         }
     }
 
     public override void Exit()
     {
-        Debug.Log("sali IdleState");
     }
 
 }

@@ -20,7 +20,7 @@ public class StrokeState : State
     }
     public override void Enter()
     {
-        Debug.Log("entre stoke");
+
     }
 
     public override void Update()
@@ -51,11 +51,9 @@ public class StrokeState : State
 
                 GameObject.Instantiate(_data.bullet, _data.transform.position, rotacion);
 
-                Debug.Log("disparo");
 
                 _useShoot = false;
                 _data.timer2 = 0;
-                //StrateMachine.ChangeState(Estados.PatrolState);
             }
         }
     }
@@ -63,7 +61,7 @@ public class StrokeState : State
 
     public override void Exit()
     {
-        Debug.Log("sali stoke");
+
     }
 
 }

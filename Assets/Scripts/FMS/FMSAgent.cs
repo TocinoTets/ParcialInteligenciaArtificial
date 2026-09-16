@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum Estados
 {
+    ArriveState,
     PatrolState,
     PatrolPingPongState,
     IdleState,
@@ -17,47 +18,53 @@ public class FMSAgent : MonoBehaviour
 
     [SerializeField] private PatrolData patrolData;
     [SerializeField] private IdleState idleData;
+    [SerializeField] private ArriveState arriveState;
+
     [SerializeField] private PatrolPingPongState patrolPingPongState;
     [SerializeField] private StrokeState strokeState;
 
-    // Guarda la posición anterior del agente
     private Vector3 posicionAnterior;
 
 
     private void Awake()
     {
         steamMachine = new FMS();
+        patrolData.transform = this.transform; // ✅ inicializar transform
 
-        idleData = new IdleState(steamMachine);
         PatrolState patrolState = new PatrolState(patrolData, steamMachine);
         patrolPingPongState = new PatrolPingPongState(patrolData, steamMachine);
-        strokeState = new StrokeState(patrolData, steamMachine); // ahora sí inicializa el campo
+        arriveState = new ArriveState(patrolData, steamMachine);
+        idleData = new IdleState(patrolData, steamMachine);
 
-        steamMachine.RegisterState(Estados.IdleState, idleData);
+        // Registrar solo estados de movimiento
         steamMachine.RegisterState(Estados.PatrolState, patrolState);
         steamMachine.RegisterState(Estados.PatrolPingPongState, patrolPingPongState);
-        steamMachine.RegisterState(Estados.StrokeState, strokeState);
+        steamMachine.RegisterState(Estados.ArriveState, arriveState);
+        steamMachine.RegisterState(Estados.IdleState, idleData);
 
-        steamMachine.ChangeState(Estados.IdleState);
-
+        steamMachine.ChangeState(Estados.PatrolState);
         posicionAnterior = transform.position;
+
+        // Stroke se instancia, pero no se registra como estado
+        strokeState = new StrokeState(patrolData, steamMachine);
     }
 
 
     private void Update()
     {
-        strokeState.Update();
+        // FSM maneja movimiento
         steamMachine.Update();
 
+        // Stroke corre en paralelo
+        strokeState.Update();
+
+        // Orientación del agente
         Vector3 direccion = transform.position - posicionAnterior;
-
         direccion.y = 0;
-
         if (direccion != Vector3.zero)
         {
             transform.forward = direccion;
         }
-
         posicionAnterior = transform.position;
     }
 }

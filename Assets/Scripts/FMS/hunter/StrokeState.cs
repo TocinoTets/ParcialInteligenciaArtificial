@@ -1,9 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class StrokeState : State
 {
     private PatrolData _data;
+    [SerializeField] private FMS steamMachine;
+
     [SerializeField] private float _maxDistansShoot = 5f;
     [SerializeField] private bool _useShoot = true;
     [SerializeField] private float _reutilizeShoot = 5f;
@@ -27,15 +30,16 @@ public class StrokeState : State
     {
         _data.timer2 += Time.deltaTime;
 
-        if (!_useShoot && _data.timer2 > _reutilizeShoot) 
+        if (!_useShoot && _data.timer2 > _reutilizeShoot)
         {
             _useShoot = true;
         }
-            
+
         Collider[] vecinos = Physics.OverlapSphere(_data.transform.position, _maxDistansShoot);
 
         foreach (var col in vecinos)
         {
+            // Disparo a Boids vivos
             if (col.CompareTag("Boid") && _useShoot)
             {
                 Boid boid = col.GetComponent<Boid>();
@@ -51,13 +55,21 @@ public class StrokeState : State
 
                 GameObject.Instantiate(_data.bullet, _data.transform.position, rotacion);
 
-
                 _useShoot = false;
                 _data.timer2 = 0;
             }
+
+            // Detecta Boids muertos
+            if (col.CompareTag("Dead"))
+            {
+                // Guardamos el objetivo Dead en el PatrolData
+                _data.targetDead = col.transform;
+                _data.stop = true;
+            }
         }
     }
-    
+
+
 
     public override void Exit()
     {

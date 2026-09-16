@@ -28,7 +28,12 @@ public class PatrolState : State
     {
 
         PatrollingLoop();
-        
+        // imagen de caminar 
+        if (_data.stop)
+        {
+            StrateMachine.ChangeState(Estados.ArriveState);
+        }
+
         timer += Time.deltaTime;
         _data.timer2 += Time.deltaTime;
 
@@ -67,9 +72,6 @@ public class PatrolState : State
         _data.transform.position += direccion.normalized * _data.velocity * Time.deltaTime;
     }
 
-
-
-
 }
 
 
@@ -80,9 +82,12 @@ public class PatrolData
     public float timer2 = 0;
     public GameObject trampaPrefab;
     public GameObject bullet;
+    public Transform targetDead;
 
     public List<Transform> listPositions;
     public Transform transform;
     public float minDistans;
     public float velocity;
+    public bool stop;
+
 }

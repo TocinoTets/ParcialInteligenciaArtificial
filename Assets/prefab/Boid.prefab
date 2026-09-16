@@ -160,7 +160,7 @@ MonoBehaviour:
   _MaxSpeed: 5
   _MaxSteering: 5
   _SlowingDistance: 3
-  _MinDistance: 0.1
+  _MinDistance: 0.5
   floatmaximumDetectionRange: 4
   minimumSeparationDistance: 1.5
   alignment: 2
@@ -168,7 +168,6 @@ MonoBehaviour:
   AlignmentWeight: 1
   CohesionWeight: 3
   EvadeWeight: 5
-  TrapWeight: 3
   _velocity: {x: 0, y: 0, z: 0}
   currentSteering: 5
 --- !u!114 &1222817324147643263

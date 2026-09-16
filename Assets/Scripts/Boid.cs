@@ -123,11 +123,6 @@ public class Boid : MonoBehaviour
             desiredVelocity += Evade(_targetHunter) * EvadeWeight;
         }
 
-        //aca deberia cambiar de estado a arrive
-        if (_targetTrap != null && Vector3.Distance(transform.position, _targetTrap.transform.position) <= _TrapDetectionRange)
-        {
-            currentSteering = SteeringModes.Arrive;
-        }
 
         if (desiredVelocity == Vector3.zero)
         {
@@ -198,7 +193,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this || item.isDead) continue; // Ignora agentes muertos
+            if (item == this) continue;
             float dist = Vector3.Distance(item.transform.position, transform.position);
 
             if (dist < minimumSeparationDistance && dist > 0)
@@ -219,7 +214,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this || item.isDead) continue; // Ignora agentes muertos
+            if (item == this) continue;
             if (Vector3.Distance(item.transform.position, transform.position) < floatmaximumDetectionRange)
             {
                 desired += item._velocity;
@@ -238,7 +233,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this || item.isDead) continue; // Ignora agentes muertos
+            if (item == this) continue;
             if (Vector3.Distance(item.transform.position, transform.position) < alignment)
             {
                 centerOfMass += item.transform.position;

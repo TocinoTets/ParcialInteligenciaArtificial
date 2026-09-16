@@ -3,19 +3,17 @@ using static UnityEditor.VersionControl.Asset;
 
 public class IdleState : State
 {
-    [SerializeField] private float changePatronTimer = 1f;
+    [SerializeField] private float changePatronTimer = 5f;
     [SerializeField] float timer = 0;
 
-    private PatrolData _data;//termine usando data con todos 
-    private int NumberPosition;
-    private int sentido = 1;
+    public Transform transform;
+    private PatrolData _data;
 
-
-    public IdleState(FMS strateMachine) : base(strateMachine)
+    public IdleState(PatrolData data, FMS strateMachine) : base(strateMachine)
     {
-
-        
+        _data = data;
     }
+
     public override void Enter()
     {
         timer = 0;
@@ -24,11 +22,16 @@ public class IdleState : State
     public override void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= changePatronTimer) 
-        {
-            
-            StrateMachine.ChangeState(Estados.PatrolState);
 
+        Debug.Log("prueba");
+        Boid boid = _data.targetDead.GetComponent<Boid>();
+        //poner una ui de cuchillo cuchillo 
+        if (timer >= changePatronTimer)
+        {
+            Debug.Log("paso el tiempo");
+            boid.kill();
+            _data.stop = false;
+            StrateMachine.ChangeState(Estados.PatrolState);
         }
     }
 

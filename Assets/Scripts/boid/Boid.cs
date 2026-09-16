@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Boid : MonoBehaviour
 {
+    
     private bool isDead = false;
+
+    private TrapFinder trapFinder;
 
     [Header("Targets & Detection")]
     [SerializeField] private Agent _targetHunter;
     [SerializeField] private float _HunterDetectionRange = 30f;
-    [SerializeField] private GameObject _targetTrap;
     [SerializeField] private float _TrapDetectionRange = 5f;
 
     [Header("Movement Settings")]
@@ -30,7 +33,6 @@ public class Boid : MonoBehaviour
     [SerializeField, Range(0f, 5f)] private float AlignmentWeight = 1f;
     [SerializeField, Range(0f, 5f)] private float CohesionWeight = 1f;
     [SerializeField, Range(0f, 10f)] private float EvadeWeight = 3f;
-    [SerializeField, Range(0f, 10f)] private float TrapWeight = 2f;
 
     [SerializeField] private Vector3 _velocity;
     public Vector3 Velocity => _velocity;
@@ -44,6 +46,7 @@ public class Boid : MonoBehaviour
         _velocity = randomDirection.normalized * _MaxSpeed;
 
         allAgents.Add(this);
+        trapFinder = GetComponent<TrapFinder>();
     }
 
     private void Update()
@@ -77,18 +80,16 @@ public class Boid : MonoBehaviour
     {
         switch (currentSteering)
         {
-            case SteeringModes.Seek:
-                if (_targetTrap == null) return Vector3.zero;
-                return CalculateSteering(Seek(_targetTrap.transform.position));
-
             case SteeringModes.Flee:
-                if (_targetHunter == null) return Vector3.zero;
+                if (_targetHunter == null) return Flocking();
                 return CalculateSteering(Flee(_targetHunter.transform.position));
 
             case SteeringModes.Arrive:
-                if (_targetTrap == null) return Vector3.zero;
-                return CalculateSteering(Arrive(_targetTrap.transform.position));
+                Trap nearestTrap = trapFinder.FindNearestTrap();
+                if (nearestTrap == null)return Flocking();
 
+                return CalculateSteering(Arrive(nearestTrap.transform.position, nearestTrap));  
+                
             case SteeringModes.Pursuit:
                 if (_targetHunter == null) return Vector3.zero;
                 return CalculateSteering(Pursuit(_targetHunter));
@@ -123,6 +124,12 @@ public class Boid : MonoBehaviour
             desiredVelocity += Evade(_targetHunter) * EvadeWeight;
         }
 
+        //aca deberia cambiar de estado a arrive
+        Trap nearestTrap = trapFinder.FindNearestTrap();
+        if (nearestTrap != null && Vector3.Distance(transform.position, nearestTrap.transform.position) <= _TrapDetectionRange)
+        {
+            currentSteering = SteeringModes.Arrive;
+        }
 
         if (desiredVelocity == Vector3.zero)
         {
@@ -149,10 +156,9 @@ public class Boid : MonoBehaviour
         return (transform.position - target).normalized * _MaxSpeed;
     }
 
-    private Vector3 Arrive(Vector3 target)
+    private Vector3 Arrive(Vector3 target, Trap trap)
     {
         Vector3 direction = target - transform.position;
-
         float distance = direction.magnitude;
         float velocity = _MaxSpeed;
 
@@ -162,17 +168,17 @@ public class Boid : MonoBehaviour
 
             if (distance <= _MinDistance)
             {
+                trap.DestroyTrap();
                 return Vector3.zero;
             }
-
-            velocity *= percentDistance;
-            Debug.Log("encotrado");
+            
         }
 
         Vector3 desired = direction.normalized * velocity;
-
         return desired;
     }
+
+
 
     private Vector3 Pursuit(Agent target)
     {
@@ -193,7 +199,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this) continue;
+            if (item == this || item.isDead) continue; // Ignora agentes muertos
             float dist = Vector3.Distance(item.transform.position, transform.position);
 
             if (dist < minimumSeparationDistance && dist > 0)
@@ -214,7 +220,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this) continue;
+            if (item == this || item.isDead) continue; // Ignora agentes muertos
             if (Vector3.Distance(item.transform.position, transform.position) < floatmaximumDetectionRange)
             {
                 desired += item._velocity;
@@ -233,7 +239,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this) continue;
+            if (item == this || item.isDead) continue; // Ignora agentes muertos
             if (Vector3.Distance(item.transform.position, transform.position) < alignment)
             {
                 centerOfMass += item.transform.position;
@@ -265,7 +271,12 @@ public class Boid : MonoBehaviour
 
         isDead = true;
         _velocity = Vector3.zero;
+        gameObject.tag = "Dead";
+        //cambiar color o poner una ui de muerte 
+    }
 
+    public void kill()
+    {
         StartCoroutine(Respawn());
     }
 
@@ -298,7 +309,12 @@ public class Boid : MonoBehaviour
         }
 
         isDead = false;
-
+        gameObject.tag = "Boid";
+        _velocity = new Vector3(
+        Random.Range(-1f, 1f),
+        0f,
+        Random.Range(-1f, 1f)
+        ).normalized * _MaxSpeed;
 
     }
 }

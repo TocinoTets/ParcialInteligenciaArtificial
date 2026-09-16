@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8837875613600260121}
+  - component: {fileID: 7576297692449640438}
   m_Layer: 0
   m_Name: Hunter
   m_TagString: Hunter
@@ -48,8 +49,9 @@ MonoBehaviour:
   patrolData:
     trapTimer: 5
     timer2: 0
-    trampaPrefab: {fileID: 5620583332343330279, guid: 41ff22e867ebd654a9ea35c58891ae94, type: 3}
+    trampaPrefab: {fileID: 370538934400115622, guid: 1c7e35d45418a284ca632b0622ca5dde, type: 3}
     bullet: {fileID: 902667147206019130, guid: 6ef5b4221e4278e4e93316b157d1651f, type: 3}
+    targetDead: {fileID: 0}
     listPositions:
     - {fileID: 0}
     - {fileID: 0}
@@ -58,6 +60,7 @@ MonoBehaviour:
     transform: {fileID: 8837875613600260121}
     minDistans: 0.3
     velocity: 5
+    stop: 0
 --- !u!1 &2588457029314770906
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,7 +27,11 @@ public class PatrolPingPongState : State
     {
         timer += Time.deltaTime;
         PatroPingPong();
-
+        // imagen de caminar 
+        if (_data2.stop)
+        {
+            StrateMachine.ChangeState(Estados.ArriveState);
+        }
 
         if (_data2.trampaPrefab != null && _data2.timer2 > _data2.trapTimer)
         {

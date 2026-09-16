@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Boid : MonoBehaviour
 {
-    
     private bool isDead = false;
 
     private TrapFinder trapFinder;
+    private Trap currentTargetTrap;
 
-    [Header("Targets & Detection")]
+    [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
+
+    [Header("Targets")]
     [SerializeField] private Agent _targetHunter;
     [SerializeField] private float _HunterDetectionRange = 30f;
     [SerializeField] private float _TrapDetectionRange = 5f;
@@ -18,21 +20,24 @@ public class Boid : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float _MaxSpeed = 5f;
     [SerializeField] private float _MaxSteering = 5f;
-    [SerializeField] private float _SlowingDistance = 3f;
+    [SerializeField] private float _SlowingDistance = 1f;
     [SerializeField] private float _MinDistance = 0.1f;
 
-
-    [Header("Flocking Settings")]
+    [Header("Flocking settings")]
     private static List<Boid> allAgents = new List<Boid>();
     [SerializeField] private float floatmaximumDetectionRange = 4f;
     [SerializeField] private float minimumSeparationDistance = 1.5f;
     [SerializeField] private float alignment = 2f;
 
-    [Header("Flocking Weights")]
+    [Header("Flocking weights")]
     [SerializeField, Range(0f, 5f)] private float SeparationWeight = 1f;
     [SerializeField, Range(0f, 5f)] private float AlignmentWeight = 1f;
     [SerializeField, Range(0f, 5f)] private float CohesionWeight = 1f;
     [SerializeField, Range(0f, 10f)] private float EvadeWeight = 3f;
+
+    [Header("Visual settings")]
+    [SerializeField] private Material deadMaterial;
+    private Material originalMaterial;
 
     [SerializeField] private Vector3 _velocity;
     public Vector3 Velocity => _velocity;
@@ -47,6 +52,12 @@ public class Boid : MonoBehaviour
 
         allAgents.Add(this);
         trapFinder = GetComponent<TrapFinder>();
+
+        Renderer mainRenderer = GetComponentInChildren<Renderer>();
+        if (mainRenderer != null)
+        {
+            originalMaterial = mainRenderer.sharedMaterial;
+        }
     }
 
     private void Update()
@@ -73,7 +84,17 @@ public class Boid : MonoBehaviour
 
     private void OnDestroy()
     {
+        ReleaseTrap();
         allAgents.Remove(this);
+    }
+
+    private void ReleaseTrap()
+    {
+        if (currentTargetTrap != null)
+        {
+            currentTargetTrap.Release(this);
+            currentTargetTrap = null;
+        }
     }
 
     private Vector3 GetSteeringForce()
@@ -81,20 +102,33 @@ public class Boid : MonoBehaviour
         switch (currentSteering)
         {
             case SteeringModes.Flee:
+                ReleaseTrap();
                 if (_targetHunter == null) return Flocking();
                 return CalculateSteering(Flee(_targetHunter.transform.position));
 
             case SteeringModes.Arrive:
-                Trap nearestTrap = trapFinder.FindNearestTrap();
-                if (nearestTrap == null)return Flocking();
+                // Si la trampa ya no existe o fue destruida por otro medio
+                if (currentTargetTrap == null)
+                {
+                    currentTargetTrap = trapFinder.FindNearestTrap(this);
+                    if (currentTargetTrap != null) currentTargetTrap.Claim(this);
+                }
 
-                return CalculateSteering(Arrive(nearestTrap.transform.position, nearestTrap));  
-                
+                if (currentTargetTrap == null)
+                {
+                    currentSteering = SteeringModes.Flocking;
+                    return Flocking();
+                }
+
+                return CalculateSteering(Arrive(currentTargetTrap.transform.position, currentTargetTrap));
+
             case SteeringModes.Pursuit:
+                ReleaseTrap();
                 if (_targetHunter == null) return Vector3.zero;
                 return CalculateSteering(Pursuit(_targetHunter));
 
             case SteeringModes.Evade:
+                ReleaseTrap();
                 if (_targetHunter == null) return Vector3.zero;
                 return CalculateSteering(Evade(_targetHunter));
 
@@ -108,27 +142,26 @@ public class Boid : MonoBehaviour
 
     private Vector3 Flocking()
     {
-
-        // 1. Fuerzas base de Flocking
-
         Vector3 calculateSeparation = CalculateSeparation();
         Vector3 calculateAlignment = CalculateAlignment();
         Vector3 calculateCohesion = CalculateCohesion();
 
         Vector3 desiredVelocity = calculateSeparation * SeparationWeight + calculateAlignment * AlignmentWeight + calculateCohesion * CohesionWeight;
-        
 
-        // esto anda bien el tema es cuando lo pones en una funcion y lo llamas desde el update,( ahi se rompe todo, no se porque)lo que esta entre parantesis no lo escribi yo lo dijo copilot
         if (_targetHunter != null && Vector3.Distance(transform.position, _targetHunter.transform.position) <= _HunterDetectionRange)
         {
             desiredVelocity += Evade(_targetHunter) * EvadeWeight;
         }
 
-        //aca deberia cambiar de estado a arrive
-        Trap nearestTrap = trapFinder.FindNearestTrap();
+        // Buscar una trampa libre pasándole 'this'
+        Trap nearestTrap = trapFinder.FindNearestTrap(this);
         if (nearestTrap != null && Vector3.Distance(transform.position, nearestTrap.transform.position) <= _TrapDetectionRange)
         {
-            currentSteering = SteeringModes.Arrive;
+            if (nearestTrap.Claim(this))
+            {
+                currentTargetTrap = nearestTrap;
+                currentSteering = SteeringModes.Arrive;
+            }
         }
 
         if (desiredVelocity == Vector3.zero)
@@ -145,16 +178,8 @@ public class Boid : MonoBehaviour
         return Vector3.ClampMagnitude(steering, _MaxSteering * Time.deltaTime);
     }
 
-    /*/comportamientos individuales/*/
-    private Vector3 Seek(Vector3 target)
-    {
-        return (target - transform.position).normalized * _MaxSpeed;
-    }
-
-    private Vector3 Flee(Vector3 target)
-    {
-        return (transform.position - target).normalized * _MaxSpeed;
-    }
+    private Vector3 Seek(Vector3 target) => (target - transform.position).normalized * _MaxSpeed;
+    private Vector3 Flee(Vector3 target) => (transform.position - target).normalized * _MaxSpeed;
 
     private Vector3 Arrive(Vector3 target, Trap trap)
     {
@@ -164,33 +189,20 @@ public class Boid : MonoBehaviour
 
         if (distance <= _SlowingDistance)
         {
-            float percentDistance = distance / _SlowingDistance;
-
             if (distance <= _MinDistance)
             {
                 trap.DestroyTrap();
+                ReleaseTrap();
+                currentSteering = SteeringModes.Flocking;
                 return Vector3.zero;
             }
-            
         }
 
-        Vector3 desired = direction.normalized * velocity;
-        return desired;
+        return direction.normalized * velocity;
     }
 
-
-
-    private Vector3 Pursuit(Agent target)
-    {
-        Vector3 futurePosition = CalculateFuture(target);
-        return Seek(futurePosition);
-    }
-
-    private Vector3 Evade(Agent target)
-    {
-        Vector3 futurePosition = CalculateFuture(target);
-        return Flee(futurePosition);
-    }
+    private Vector3 Pursuit(Agent target) => Seek(CalculateFuture(target));
+    private Vector3 Evade(Agent target) => Flee(CalculateFuture(target));
 
     private Vector3 CalculateSeparation()
     {
@@ -199,7 +211,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this || item.isDead) continue; // Ignora agentes muertos
+            if (item == this || item.isDead) continue;
             float dist = Vector3.Distance(item.transform.position, transform.position);
 
             if (dist < minimumSeparationDistance && dist > 0)
@@ -220,7 +232,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this || item.isDead) continue; // Ignora agentes muertos
+            if (item == this || item.isDead) continue;
             if (Vector3.Distance(item.transform.position, transform.position) < floatmaximumDetectionRange)
             {
                 desired += item._velocity;
@@ -239,7 +251,7 @@ public class Boid : MonoBehaviour
 
         foreach (var item in allAgents)
         {
-            if (item == this || item.isDead) continue; // Ignora agentes muertos
+            if (item == this || item.isDead) continue;
             if (Vector3.Distance(item.transform.position, transform.position) < alignment)
             {
                 centerOfMass += item.transform.position;
@@ -269,52 +281,53 @@ public class Boid : MonoBehaviour
     {
         if (isDead) return;
 
+        ReleaseTrap(); // Liberar la trampa si muere en el camino
         isDead = true;
         _velocity = Vector3.zero;
         gameObject.tag = "Dead";
-        //cambiar color o poner una ui de muerte 
+        ChangeMaterial(deadMaterial);
     }
 
     public void kill()
     {
+        Die();
         StartCoroutine(Respawn());
+    }
+
+    private void ChangeMaterial(Material targetMaterial)
+    {
+        if (targetMaterial == null) return;
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material = targetMaterial;
+        }
     }
 
     private IEnumerator Respawn()
     {
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
-
-        foreach (Renderer renderer in renderers)
-        {
-            renderer.enabled = false;
-        }
-
         Collider[] colliders = GetComponentsInChildren<Collider>();
 
-        foreach (Collider collider in colliders)
-        {
-            collider.enabled = false;
-        }
+        foreach (Renderer renderer in renderers) renderer.enabled = false;
+        foreach (Collider collider in colliders) collider.enabled = false;
 
         yield return new WaitForSeconds(10f);
 
-        foreach (Renderer renderer in renderers)
+        if (spawnPoints != null && spawnPoints.Count > 0)
         {
-            renderer.enabled = true;
+            int randomIndex = Random.Range(0, spawnPoints.Count);
+            transform.position = spawnPoints[randomIndex].position;
         }
 
-        foreach (Collider collider in colliders)
-        {
-            collider.enabled = true;
-        }
+        ChangeMaterial(originalMaterial);
+
+        foreach (Renderer renderer in renderers) renderer.enabled = true;
+        foreach (Collider collider in colliders) collider.enabled = true;
 
         isDead = false;
         gameObject.tag = "Boid";
-        _velocity = new Vector3(
-        Random.Range(-1f, 1f),
-        0f,
-        Random.Range(-1f, 1f)
-        ).normalized * _MaxSpeed;
-
+        _velocity = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized * _MaxSpeed;
     }
 }

@@ -8,6 +8,7 @@ public class IdleState : State
 
     public Transform transform;
     private PatrolData _data;
+    [SerializeField] private Canvas knifeCanvas; // asignalo desde el Inspector donde crees el PatrolData
 
     public IdleState(PatrolData data, FMS strateMachine) : base(strateMachine)
     {
@@ -30,6 +31,7 @@ public class IdleState : State
         {
             Debug.Log("paso el tiempo");
             boid.kill();
+            // knifeCanvas.gameObject.SetActive(true);
             _data.stop = false;
             StrateMachine.ChangeState(Estados.PatrolState);
         }

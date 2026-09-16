@@ -90,9 +90,6 @@ public class Boid : MonoBehaviour
         {
             isMoving = currentlyMoving;
             ChangeMaterial(isMoving ? originalMaterial : deadMaterial);
-
-            // AGREGADO: Cambia el tag según si se mueve o no
-            gameObject.tag = isMoving ? "Boid" : "Dead";
         }
     }
 

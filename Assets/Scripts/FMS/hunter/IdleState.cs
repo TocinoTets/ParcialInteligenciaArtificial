@@ -8,7 +8,6 @@ public class IdleState : State
 
     public Transform transform;
     private PatrolData _data;
-    [SerializeField] private Canvas knifeCanvas; // asignalo desde el Inspector donde crees el PatrolData
 
     public IdleState(PatrolData data, FMS strateMachine) : base(strateMachine)
     {
@@ -24,14 +23,10 @@ public class IdleState : State
     {
         timer += Time.deltaTime;
 
-        Debug.Log("prueba");
         Boid boid = _data.targetDead.GetComponent<Boid>();
-        //poner una ui de cuchillo cuchillo 
         if (timer >= changePatronTimer)
         {
-            Debug.Log("paso el tiempo");
             boid.kill();
-            // knifeCanvas.gameObject.SetActive(true);
             _data.stop = false;
             StrateMachine.ChangeState(Estados.PatrolState);
         }

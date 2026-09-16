@@ -5,7 +5,6 @@ using UnityEngine;
 public class Boid : MonoBehaviour
 {
     private bool isDead = false;
-    private bool isMoving = true; // Control para evitar cambio de material innecesario cada frame
     private TrapFinder trapFinder;
     private Trap currentTargetTrap;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
@@ -33,9 +32,7 @@ public class Boid : MonoBehaviour
     [SerializeField, Range(0f, 5f)] private float CohesionWeight = 1f;
     [SerializeField, Range(0f, 10f)] private float EvadeWeight = 3f;
 
-    [Header("Visual settings")]
-    [SerializeField] private Material deadMaterial;
-    private Material originalMaterial;
+  
 
     [SerializeField] private Vector3 _velocity;
     public Vector3 Velocity => _velocity;
@@ -50,16 +47,12 @@ public class Boid : MonoBehaviour
         allAgents.Add(this);
         trapFinder = GetComponent<TrapFinder>();
 
-        Renderer mainRenderer = GetComponentInChildren<Renderer>();
-        if (mainRenderer != null)
-        {
-            originalMaterial = mainRenderer.sharedMaterial;
-        }
     }
 
     private void Update()
     {
-        if (isDead) return;
+        if (isDead)  return; 
+
 
         _velocity += GetSteeringForce();
         _velocity.y = 0f;
@@ -77,21 +70,9 @@ public class Boid : MonoBehaviour
         {
             transform.position = Bounds.Instance.OutOfBounds(transform.position);
         }
-
-        // Evaluar cambio de material según el movimiento
-        UpdateMovementMaterial();
+     
     }
 
-    private void UpdateMovementMaterial()
-    {
-        bool currentlyMoving = _velocity.sqrMagnitude > 0.01f;
-
-        if (currentlyMoving != isMoving)
-        {
-            isMoving = currentlyMoving;
-            ChangeMaterial(isMoving ? originalMaterial : deadMaterial);
-        }
-    }
 
     private void OnDestroy()
     {
@@ -293,7 +274,7 @@ public class Boid : MonoBehaviour
         isDead = true;
         _velocity = Vector3.zero;
         gameObject.tag = "Dead";
-        ChangeMaterial(deadMaterial);
+        
     }
 
     public void kill()
@@ -302,16 +283,7 @@ public class Boid : MonoBehaviour
         StartCoroutine(Respawn());
     }
 
-    private void ChangeMaterial(Material targetMaterial)
-    {
-        if (targetMaterial == null) return;
 
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in renderers)
-        {
-            renderer.material = targetMaterial;
-        }
-    }
 
     private IEnumerator Respawn()
     {
@@ -333,9 +305,7 @@ public class Boid : MonoBehaviour
         foreach (Collider collider in colliders) collider.enabled = true;
 
         isDead = false;
-        isMoving = true;
         gameObject.tag = "Boid";
         _velocity = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized * _MaxSpeed;
-        ChangeMaterial(originalMaterial);
     }
 }

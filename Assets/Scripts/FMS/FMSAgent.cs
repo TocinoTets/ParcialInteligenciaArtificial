@@ -29,7 +29,7 @@ public class FMSAgent : MonoBehaviour
     private void Awake()
     {
         steamMachine = new FMS();
-        patrolData.transform = this.transform; // ✅ inicializar transform
+        patrolData.transform = this.transform; 
 
         PatrolState patrolState = new PatrolState(patrolData, steamMachine);
         patrolPingPongState = new PatrolPingPongState(patrolData, steamMachine);
@@ -45,20 +45,16 @@ public class FMSAgent : MonoBehaviour
         steamMachine.ChangeState(Estados.PatrolState);
         posicionAnterior = transform.position;
 
-        // Stroke se instancia, pero no se registra como estado
         strokeState = new StrokeState(patrolData, steamMachine);
     }
 
 
     private void Update()
     {
-        // FSM maneja movimiento
         steamMachine.Update();
 
-        // Stroke corre en paralelo
         strokeState.Update();
 
-        // Orientación del agente
         Vector3 direccion = transform.position - posicionAnterior;
         direccion.y = 0;
         if (direccion != Vector3.zero)

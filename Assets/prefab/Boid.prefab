@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1546952232720464358}
   - component: {fileID: 3604455493821197132}
   - component: {fileID: 1222817324147643263}
-  - component: {fileID: 6963112859171431710}
+  - component: {fileID: 2462889878032213022}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Boid
@@ -162,10 +162,10 @@ MonoBehaviour:
   - {fileID: 0}
   _targetHunter: {fileID: 0}
   _HunterDetectionRange: 10
-  _TrapDetectionRange: 5
+  _TrapDetectionRange: 3
   _MaxSpeed: 5
   _MaxSteering: 5
-  _SlowingDistance: 3
+  _SlowingDistance: 1
   _MinDistance: 0.5
   floatmaximumDetectionRange: 4
   minimumSeparationDistance: 1.5
@@ -188,8 +188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c92c2db2f80cf44682d472ac7cdd0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrapFinder
-  _TrapDetectionRange: 10
---- !u!114 &6963112859171431710
+  _TrapDetectionRange: 5
+--- !u!114 &2462889878032213022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,6 +198,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2445833875673284590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0106e2f1b8e4db24ca47ca0be64c942e, type: 3}
+  m_Script: {fileID: 11500000, guid: 07d23ae3238fed64db777470c8b2f02b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DieBoid
+  m_EditorClassIdentifier: Assembly-CSharp::ChangeMaterial
+  stunMaterial: {fileID: 2100000, guid: fa7affda65d65c74d98f374ef15eb9b9, type: 2}
+  deadMaterial: {fileID: 2100000, guid: 849df287b18259c4f832722d4a3d33f6, type: 2}
+  originalMaterial: {fileID: 2100000, guid: b19ffd4891f38ed4eb2b1467ad0113b6, type: 2}

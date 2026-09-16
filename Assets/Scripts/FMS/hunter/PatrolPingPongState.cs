@@ -27,7 +27,6 @@ public class PatrolPingPongState : State
     {
         timer += Time.deltaTime;
         PatroPingPong();
-        // imagen de caminar 
         if (_data2.stop)
         {
             StrateMachine.ChangeState(Estados.ArriveState);

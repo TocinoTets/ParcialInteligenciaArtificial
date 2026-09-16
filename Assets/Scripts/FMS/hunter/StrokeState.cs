@@ -16,7 +16,6 @@ public class StrokeState : State
 
 
     public StrokeState(PatrolData data, FMS strateMachine) : base(strateMachine)
-    //le tengo q pasar esto xq State no es MonoBehaviour para pasar el .transform.position del ajente
     {
 
         _data = data;
@@ -39,7 +38,6 @@ public class StrokeState : State
 
         foreach (var col in vecinos)
         {
-            // Disparo a Boids vivos
             if (col.CompareTag("Boid") && _useShoot)
             {
                 Boid boid = col.GetComponent<Boid>();
@@ -59,10 +57,8 @@ public class StrokeState : State
                 _data.timer2 = 0;
             }
 
-            // Detecta Boids muertos
             if (col.CompareTag("Dead"))
             {
-                // Guardamos el objetivo Dead en el PatrolData
                 _data.targetDead = col.transform;
                 _data.stop = true;
             }

@@ -8,7 +8,6 @@ public class Trap : MonoBehaviour
     private static List<Trap> allTraps = new List<Trap>();
     public static IReadOnlyList<Trap> AllTraps => allTraps;
 
-    // Guarda qué Boid tiene reservada esta trampa
     public Boid Targeter { get; private set; }
     public bool IsTargeted => Targeter != null;
 
@@ -17,7 +16,6 @@ public class Trap : MonoBehaviour
 
     public bool Claim(Boid boid)
     {
-        // Se puede reclamar si está libre o si ya la tiene este mismo Boid
         if (Targeter == null || Targeter == boid)
         {
             Targeter = boid;

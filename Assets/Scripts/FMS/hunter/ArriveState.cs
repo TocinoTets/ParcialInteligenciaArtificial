@@ -11,7 +11,7 @@ public class ArriveState : State
 
     public override void Enter()
     {
-
+        _data._renderer.material = _data.grab;
     }
 
     public override void Update()
@@ -27,9 +27,9 @@ public class ArriveState : State
         float distance = direction.magnitude;
         float velocity = _data.velocity;
 
+
         if (distance <= _data.minDistans)
         {
-            Debug.Log("Llegó al objeto Dead");
             StrateMachine.ChangeState(Estados.IdleState);
         }
 

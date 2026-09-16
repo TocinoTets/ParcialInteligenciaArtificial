@@ -22,13 +22,13 @@ public class PatrolState : State
     {
         timer = 0;
         _data.timer2 = 0;
+        _data._renderer.material = _data.hunt;
     }
 
     public override void Update()
     {
 
         PatrollingLoop();
-        // imagen de caminar 
         if (_data.stop)
         {
             StrateMachine.ChangeState(Estados.ArriveState);
@@ -89,5 +89,7 @@ public class PatrolData
     public float minDistans;
     public float velocity;
     public bool stop;
-
+    public Material grab;
+    public Material hunt;
+    public Renderer _renderer;
 }

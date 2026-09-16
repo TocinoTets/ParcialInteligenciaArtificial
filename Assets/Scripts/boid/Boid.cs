@@ -6,10 +6,8 @@ using UnityEngine;
 public class Boid : MonoBehaviour
 {
     private bool isDead = false;
-
     private TrapFinder trapFinder;
     private Trap currentTargetTrap;
-
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
     [Header("Targets")]
@@ -41,7 +39,6 @@ public class Boid : MonoBehaviour
 
     [SerializeField] private Vector3 _velocity;
     public Vector3 Velocity => _velocity;
-
     public enum SteeringModes { Seek, Flee, Arrive, Pursuit, Evade, Flocking }
     public SteeringModes currentSteering = SteeringModes.Flocking;
 
@@ -193,7 +190,7 @@ public class Boid : MonoBehaviour
             {
                 trap.DestroyTrap();
                 ReleaseTrap();
-                currentSteering = SteeringModes.Flocking;
+                //currentSteering = SteeringModes.Flocking;
                 return Vector3.zero;
             }
         }

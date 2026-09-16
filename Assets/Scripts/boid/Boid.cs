@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
     private bool isDead = false;
+    private bool isMoving = true; // Control para evitar cambio de material innecesario cada frame
     private TrapFinder trapFinder;
     private Trap currentTargetTrap;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
@@ -77,6 +77,23 @@ public class Boid : MonoBehaviour
         {
             transform.position = Bounds.Instance.OutOfBounds(transform.position);
         }
+
+        // Evaluar cambio de material según el movimiento
+        UpdateMovementMaterial();
+    }
+
+    private void UpdateMovementMaterial()
+    {
+        bool currentlyMoving = _velocity.sqrMagnitude > 0.01f;
+
+        if (currentlyMoving != isMoving)
+        {
+            isMoving = currentlyMoving;
+            ChangeMaterial(isMoving ? originalMaterial : deadMaterial);
+
+            // AGREGADO: Cambia el tag según si se mueve o no
+            gameObject.tag = isMoving ? "Boid" : "Dead";
+        }
     }
 
     private void OnDestroy()
@@ -104,7 +121,6 @@ public class Boid : MonoBehaviour
                 return CalculateSteering(Flee(_targetHunter.transform.position));
 
             case SteeringModes.Arrive:
-                // Si la trampa ya no existe o fue destruida por otro medio
                 if (currentTargetTrap == null)
                 {
                     currentTargetTrap = trapFinder.FindNearestTrap(this);
@@ -150,7 +166,6 @@ public class Boid : MonoBehaviour
             desiredVelocity += Evade(_targetHunter) * EvadeWeight;
         }
 
-        // Buscar una trampa libre pasándole 'this'
         Trap nearestTrap = trapFinder.FindNearestTrap(this);
         if (nearestTrap != null && Vector3.Distance(transform.position, nearestTrap.transform.position) <= _TrapDetectionRange)
         {
@@ -190,7 +205,6 @@ public class Boid : MonoBehaviour
             {
                 trap.DestroyTrap();
                 ReleaseTrap();
-                //currentSteering = SteeringModes.Flocking;
                 return Vector3.zero;
             }
         }
@@ -278,7 +292,7 @@ public class Boid : MonoBehaviour
     {
         if (isDead) return;
 
-        ReleaseTrap(); // Liberar la trampa si muere en el camino
+        ReleaseTrap();
         isDead = true;
         _velocity = Vector3.zero;
         gameObject.tag = "Dead";
@@ -318,13 +332,13 @@ public class Boid : MonoBehaviour
             transform.position = spawnPoints[randomIndex].position;
         }
 
-        ChangeMaterial(originalMaterial);
-
         foreach (Renderer renderer in renderers) renderer.enabled = true;
         foreach (Collider collider in colliders) collider.enabled = true;
 
         isDead = false;
+        isMoving = true;
         gameObject.tag = "Boid";
         _velocity = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized * _MaxSpeed;
+        ChangeMaterial(originalMaterial);
     }
 }

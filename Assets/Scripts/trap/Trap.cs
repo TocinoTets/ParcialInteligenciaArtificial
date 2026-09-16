@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Trap : MonoBehaviour
 {
-    [SerializeField] private float _destroyTrap = 5f;
+    [SerializeField] private float _destroyTrap = 1f;
 
     private static List<Trap> allTraps = new List<Trap>();
     public static IReadOnlyList<Trap> AllTraps => allTraps;

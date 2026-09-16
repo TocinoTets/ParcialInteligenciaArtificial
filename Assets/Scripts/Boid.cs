@@ -5,11 +5,11 @@ using UnityEngine;
 public class Boid : MonoBehaviour
 {
     private bool isDead = false;
+    private TrapFinder trapFinder;
 
     [Header("Targets & Detection")]
     [SerializeField] private Agent _targetHunter;
     [SerializeField] private float _HunterDetectionRange = 30f;
-    [SerializeField] private GameObject _targetTrap;
     [SerializeField] private float _TrapDetectionRange = 5f;
 
     [Header("Movement Settings")]
@@ -44,6 +44,7 @@ public class Boid : MonoBehaviour
         _velocity = randomDirection.normalized * _MaxSpeed;
 
         allAgents.Add(this);
+        trapFinder = GetComponent<TrapFinder>();
     }
 
     private void Update()
@@ -77,17 +78,16 @@ public class Boid : MonoBehaviour
     {
         switch (currentSteering)
         {
-            case SteeringModes.Seek:
-                if (_targetTrap == null) return Vector3.zero;
-                return CalculateSteering(Seek(_targetTrap.transform.position));
+
 
             case SteeringModes.Flee:
                 if (_targetHunter == null) return Vector3.zero;
                 return CalculateSteering(Flee(_targetHunter.transform.position));
 
             case SteeringModes.Arrive:
-                if (_targetTrap == null) return Vector3.zero;
-                return CalculateSteering(Arrive(_targetTrap.transform.position));
+                Trap nearestTrap = trapFinder.FindNearestTrap();
+                if (nearestTrap == null) return Vector3.zero;
+                return CalculateSteering(Arrive(nearestTrap.transform.position));
 
             case SteeringModes.Pursuit:
                 if (_targetHunter == null) return Vector3.zero;
@@ -124,7 +124,8 @@ public class Boid : MonoBehaviour
         }
 
         //aca deberia cambiar de estado a arrive
-        if (_targetTrap != null && Vector3.Distance(transform.position, _targetTrap.transform.position) <= _TrapDetectionRange)
+        Trap nearestTrap = trapFinder.FindNearestTrap();
+        if (nearestTrap != null && Vector3.Distance(transform.position, nearestTrap.transform.position) <= _TrapDetectionRange)
         {
             currentSteering = SteeringModes.Arrive;
         }
@@ -157,7 +158,6 @@ public class Boid : MonoBehaviour
     private Vector3 Arrive(Vector3 target)
     {
         Vector3 direction = target - transform.position;
-
         float distance = direction.magnitude;
         float velocity = _MaxSpeed;
 
@@ -171,11 +171,10 @@ public class Boid : MonoBehaviour
             }
 
             velocity *= percentDistance;
-            Debug.Log("encotrado");
+            Debug.Log("Trampa encontrada");
         }
 
         Vector3 desired = direction.normalized * velocity;
-
         return desired;
     }
 

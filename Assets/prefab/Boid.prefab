@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2831041279798403723}
   - component: {fileID: 5279372029539446314}
   - component: {fileID: 5871851288687115452}
+  - component: {fileID: 4829543811897901668}
   - component: {fileID: 1546952232720464358}
   - component: {fileID: 3604455493821197132}
-  - component: {fileID: 4829543811897901668}
+  - component: {fileID: 1222817324147643263}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Boid
@@ -93,6 +94,33 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &4829543811897901668
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2445833875673284590}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &1546952232720464358
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -127,9 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boid
   _targetHunter: {fileID: 0}
-  _HunterDetectionRange: 20
-  _targetTrap: {fileID: 5620583332343330279, guid: 41ff22e867ebd654a9ea35c58891ae94, type: 3}
-  _TrapDetectionRange: 3
+  _HunterDetectionRange: 10
+  _TrapDetectionRange: 5
   _MaxSpeed: 5
   _MaxSteering: 5
   _SlowingDistance: 3
@@ -144,30 +171,16 @@ MonoBehaviour:
   TrapWeight: 3
   _velocity: {x: 0, y: 0, z: 0}
   currentSteering: 5
---- !u!54 &4829543811897901668
-Rigidbody:
+--- !u!114 &1222817324147643263
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2445833875673284590}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c92c2db2f80cf44682d472ac7cdd0c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrapFinder
+  _TrapDetectionRange: 10

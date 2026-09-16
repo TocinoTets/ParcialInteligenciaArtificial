@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25692922
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -204,8 +204,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -350,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25692987
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -413,8 +433,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -443,7 +483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2569308
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -506,8 +546,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -536,7 +596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25692928
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -599,8 +659,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -856,7 +936,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25692979
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -919,8 +999,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1002,7 +1102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25693035
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1065,8 +1165,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1100,7 +1220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25692922
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2831041279798403723, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1163,8 +1283,28 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _trapDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
       propertyPath: _HunterDetectionRange
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: _hunterDetectionRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <CohesionWeight>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3604455493821197132, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: <SeparationWeight>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4829543811897901668, guid: 1ddbab6fa1305394695d6bd197f4b27a, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
